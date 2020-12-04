@@ -1,0 +1,91 @@
+<!--
+ * @Author: your name
+ * @LastEditors: xiasong
+ * @Date: 2020-09-27 17:54:44
+ * @LastEditTime: 2020-12-04 17:38:27
+ * @Description: description
+ * @FilePath: \demo\index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .demo::placeholder {
+            font-size: 30px;
+        }
+    </style>
+
+    <link rel="stylesheet" href="./css/index.moudle.css">
+</head>
+
+<body>
+    <input class="demo" placeholder="demo" />
+    <script src="./js/index.js"></script>
+
+    <div class="demo2">
+        <ul id="wrapper" style="left: 1000px;">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+    </div>
+
+    <p
+        style="border-width:0px; padding-top:0px; padding-bottom:0px; margin-top:0px; margin-bottom:8px; list-style:none; text-indent:2em">
+        <label for="wheelDelta"> 滚动值:</label>(IE/Opera)
+        <input type="text" id="wheelDelta"
+            style="border-width:0px; padding-top:0px; padding-bottom:0px; margin:0px; list-style:none"></p>
+    <p
+        style="border-width:0px; padding-top:0px; padding-bottom:0px; margin-top:0px; margin-bottom:8px; list-style:none; text-indent:2em">
+        <label for="detail"> 滚动值:(Firefox)</label>
+        <input type="text" id="detail"
+            style="border-width:0px; padding-top:0px; padding-bottom:0px; margin:0px; list-style:none"></p>
+
+    <script>
+        const wrapper = document.querySelector('#wrapper')
+        const wWidth = wrapper.offsetWidth - 1000
+        console.log(wWidth);
+        let scrollX = 0
+        let unitX = 0
+        var oTxt = document.getElementById("txt");
+        var scrollFunc = function (e) {
+            var direct = 0;
+            ee = e || window.event;
+
+            var t1 = document.getElementById("wheelDelta");
+            var t2 = document.getElementById("detail");
+            if (e.wheelDelta) {//IE/Opera/Chrome 
+                unitX = e.wheelDelta
+                scrollX += e.wheelDelta
+                t1.value = e.wheelDelta;
+            } else if (e.detail) {//Firefox  
+                unitX = e.detail
+                scrollX += e.detail
+                t2.value = e.detail;
+            }
+            if (scrollX < 0) {
+                if (-scrollX > (wWidth + 1000)) scrollX = -(wWidth + 1000)
+            } else if (scrollX > 0) {
+                scrollX = 0
+            } else {
+                // wrapper.style = ''
+            }
+            console.log(scrollX);
+            wrapper.style.transform = `translateX(${scrollX}px)`
+        }
+
+        /*注册事件*/
+        if (document.addEventListener) {
+            document.addEventListener('DOMMouseScroll', scrollFunc, false);
+        }//W3C  
+        window.onmousewheel = document.onmousewheel = scrollFunc; //IE/Opera/Chrome/Safari  
+    </script>
+</body>
+
+</html>
